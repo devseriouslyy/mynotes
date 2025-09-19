@@ -1,0 +1,32 @@
+FROM: Udemy - Terraform 101 Ultimate Hands on Guide[Azure Edition]
+
+Set up of Terraform on Windows:
+1. Install VSCode on Windows
+2. Install Chocolatey package manager on Windows
+3. Install Terraform using chocolatey via the Administrator CMD line
+4. I have an old version of Terraform installed.
+Uninstalled the old version
+C:\Windows\System32>choco uninstall terraform
+Chocolatey v1.2.1
+Uninstalling the following packages:
+terraform
+
+5. After uninstall, ran the install again and version 1.13.2 (latest) got installed.
+C:\Windows\System32>terraform -version
+Terraform v1.13.2
+on windows_amd64
+
+6. Install Terraform extension for VScode - DONE
+	1. Settings - Editor - Format on Save
+7. Install Azure CLI on Windows using choco
+	1. choco install azure-cli -y
+8. Install Git-Bash on windows ----DONE
+9. Check in VSCode - in Terminal you should be able to use GitBash along with PowerShell
+
+Basic Terraform commands:
+1. terraform init
+2. terraform plan
+3. terraform apply
+4. terraform destroy
+
+
