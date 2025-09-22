@@ -29,4 +29,19 @@ Basic Terraform commands:
 3. terraform apply
 4. terraform destroy
 
+Encapsulation in Terraform:
+Its one of the core principles of OOPs
+In software engineering, **encapsulation** means grouping related functionality together and hiding internal details so that only a clean interface is exposed.
+In Terraform, encapsulation mainly comes from using **modules**.
+
+Terraform module is a container for multiple resources that are used together. By wrapping resources inside a module, you:
+Expose only input variables and output values (the interface).    
+Hide implementation details like individual resources, naming conventions, or conditional logic.    
+Allow reusability—modules can be shared across teams or projects.
+### Benefits of Encapsulation in Terraform:
+	-> Hides Complexity – Users don’t see resource-level details.    
+	-> Reusability – The same module can be used in multiple projects.    
+	-> Consistency – Teams enforce best practices in one module and reuse it.    
+	-> Security – Internals (like naming, tags, IAM policies) can be hidden.    
+	-> Maintainability – Change internals without breaking user-facing interface.
 
