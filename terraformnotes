@@ -1,11 +1,32 @@
-FROM: Udemy - Terraform 101 Ultimate Hands on Guide[Azure Edition]
+[[devops]]
+[[terraform]]
 
-Set up of Terraform on Windows:
-1. Install VSCode on Windows
-2. Install Chocolatey package manager on Windows
-3. Install Terraform using chocolatey via the Administrator CMD line
+FROM: Udemy - Terraform 101 Ultimate Hands on Guide
+
+1. Set up of Terraform on Windows:
+	1. Install VSCode on Windows
+	2. Install Chocolatey package manager on Windows
+	3. Install Terraform using chocolatey via the Administrator CMD line 
+
+	C:\Windows\System32>choco install terraform -y
+Chocolatey v1.2.1
+Installing the following packages:
+terraform
+By installing, you accept licenses for the packages.
+terraform v1.3.7 already installed.
+ Use --force to reinstall, specify a version to install, or try upgrade.
+
+Chocolatey installed 0/1 packages.
+ See the log for details (C:\ProgramData\chocolatey\logs\chocolatey.log).
+
+Warnings:
+ - terraform - terraform v1.3.7 already installed.
+ Use --force to reinstall, specify a version to install, or try upgrade.
+
+C:\Windows\System32>
+
 4. I have an old version of Terraform installed.
-Uninstalled the old version
+Uninstalled the old version 
 C:\Windows\System32>choco uninstall terraform
 Chocolatey v1.2.1
 Uninstalling the following packages:
@@ -16,32 +37,121 @@ C:\Windows\System32>terraform -version
 Terraform v1.13.2
 on windows_amd64
 
-6. Install Terraform extension for VScode - DONE
-	1. Settings - Editor - Format on Save
+6. Install Terraform extension for VScode - DONE 
+	1. Settings - Editor - Format on Save 
+
 7. Install Azure CLI on Windows using choco
 	1. choco install azure-cli -y
+	2. Run the below post installation from a new Admin CMD 
+C:\Windows\System32>az --version
+azure-cli                         2.77.0
+
+core                              2.77.0
+telemetry                          1.1.0
+
+Dependencies:
+msal                            1.34.0b1
+azure-mgmt-resource               23.3.0
+
 8. Install Git-Bash on windows ----DONE
-9. Check in VSCode - in Terminal you should be able to use GitBash along with PowerShell
+9. Check in VSCode - in Terminal you should be able to use GitBash along with PowerShell ---DONE
+10. Reference folder created as per course - C:\Users\Aditya\source
+11. Terraform (basic) commands:
+	1. **terraform init** 
+		initializes the current working directory. 
+		This created the ".terraform" folder and ".terraform.lock.hcl" file.
+	2. **terraform plan** 
+	3. **terraform apply**  
+		Applies your changes and creates the terraform.tfstate file. 
+		This command actually provisions what you need. 
+	4. **terraform destroy** 
+		Destroys the infra or resources you have created after confirmation.
+12. **Input Variables**:
+		Mechanism by which we can pass in values to terraform.
+		Adds the ability to customize your terraform module.
+		As a best practice put all your input variables in "variables.tf" file.
+13. Remember:
+		When you write Terraform for Azure - it only works on Azure
+		When you write Terraform for AWS - it only works on AWS.
+		Terraform supports multiple cloud platforms but the above 2 statements also hold true.
+		Udemy - Terraform 101 Ultimate Hands on Guide ---Lecture3
+		**Immutability** - 
+				Its a simple concept about whether something can be updated, changed, manipulated in place, or whether something has to be deleted & recreated.
+				Example:- 
+				A polaroid picture is an immutable artifact 
+				whereas 
+				A white board can be considered as mutable (since we can rewrite on it as many times).
+14. **Local variables**:
+		Defined inside your Terraform configuration.
+		Convenient for storing reusable constants or intermediate values
+15. **Outputs**:
+		Allow us to extract values out of terraform from all the resources & things that Terraform has provisioned, & within our infrastructure to pass it forward to other tools that might be part of our automation pipeline like Ansible or K8s.
+			Terraform command - **terraform output**
+		Outputs are defined in the "outputs.tf" file.
+		Outputs are extremely valuable specially when using Terraform with other tools like Ansible, K8s etc.
 
-Basic Terraform commands:
-1. terraform init
-2. terraform plan
-3. terraform apply
-4. terraform destroy
+16. Login with Azure CLI:
+		From CMD -> az --version  (to check if the cli package is installed)
+		From CMD -> az login  (log in with you aws gmail id)
+		From CMD -> az login --tenant TENANT_ID  (check your tenant id on Azure portal)
+17. Configure Azure terraform provider:
+		From URL - https://registry.terraform.io/providers/hashicorp/azurerm/latest
+		Upgraded terraform azure provider from v4.1.0 to v4.45.0
+			az account list
+			az account show 
+18. What is provider in Terraform?
+		In Terraform, a **provider** is a plugin that acts as the bridge between Terraform and the APIs of a cloud platform, SaaS, or other service.
 
-Encapsulation in Terraform:
-Its one of the core principles of OOPs
-In software engineering, **encapsulation** means grouping related functionality together and hiding internal details so that only a clean interface is exposed.
-In Terraform, encapsulation mainly comes from using **modules**.
-
-Terraform module is a container for multiple resources that are used together. By wrapping resources inside a module, you:
-Expose only input variables and output values (the interface).    
-Hide implementation details like individual resources, naming conventions, or conditional logic.    
-Allow reusability—modules can be shared across teams or projects.
-### Benefits of Encapsulation in Terraform:
+	It tells Terraform **how to authenticate** and **how to create, read, update, and delete resources** on that service.
+	The **AzureRM provider** lets Terraform manage resources in **Azure Resource Manager (ARM)**.
+19. **Encapsulation** in Terraform:
+		Its one of the core principles of OOPs
+		In software engineering, **encapsulation** means grouping related functionality together and hiding internal details so that only a clean interface is exposed.
+		In Terraform, encapsulation mainly comes from using **modules**.
+	 Terraform module is a container for multiple resources that are used together. By wrapping resources inside a module, you:
+		Expose only input variables and output values (the interface).    
+		Hide implementation details like individual resources, naming conventions, or conditional logic.    
+		Allow reusability—modules can be shared across teams or projects.
+	### Benefits of Encapsulation in Terraform:
 	-> Hides Complexity – Users don’t see resource-level details.    
 	-> Reusability – The same module can be used in multiple projects.    
 	-> Consistency – Teams enforce best practices in one module and reuse it.    
 	-> Security – Internals (like naming, tags, IAM policies) can be hidden.    
 	-> Maintainability – Change internals without breaking user-facing interface.
+20. Cohesion in Terraform:
+		In Terraform, cohesion applies mostly to how you structure **modules**.
+		A cohesive Terraform module should:
+	- Have a **single, clear purpose** (e.g., "create an S3 bucket with security settings" or "deploy a VPC with subnets").    
+	- Include **all the resources necessary to fulfill that purpose**.    
+	- Avoid mixing unrelated responsibilities (e.g., don’t create a VPC _and_ an EKS cluster in the same module).
+21. Declarative versus Imperative:
+		Terraform is Declarative.
+22. Terraform.io - Go to Provider - Azure - azurerm documentation - search for storage - "azurerm_storage_account"
+23. Command to check workspace - 
+		"terraform workspace list" -----------(check current workspace)
+		"terraform workspace new dev"  -----(creates a new workspace called dev & switches to that workspace)
+		"terraform workspace select <workspace-name>" -------(switch the workspace)
 
+24. The below commands were used to apply changes based on Dev and Prod environment. It created 2 separate resource groups , one for dev & one for prod.
+	terraform apply -var-file ./env/dev.tfvars 
+	terraform apply -var-file ./env/prod.tfvars
+25. While creating the storage account via terraform, Imp thing to note here was usage of random provider to generate the storage account name string.
+26. Providers translate Terraform code into API calls to the target system. Providers are listed in the versions.tf file. In Terraform, a provider is like a plugin or module that knows how to interact with a specific platform, service, or API.
+27. A workspace in Terraform is like a separate state environment for the same configuration.
+- Each workspace has its own Terraform state file.
+ 
+- The same Terraform code can be applied to multiple workspaces, resulting in separate sets of infrastructure.
+28. What is **Idempotence** in Terraform?
+A. Running the same Terraform code **multiple times** will always give you the **same result**, without making unnecessary changes.
+
+For example:
+- If Terraform has already created your server, running `terraform apply` again won’t create another one—it will detect that the server already exists and leave it as is.
+    
+- Terraform only makes changes when something in your configuration or the real-world resources is different.
+
+=========================================
+=========================================
+Questions:
+	1. Whats use of terraform.tfstate file?
+	2. Whats use of terraform.tfvars file?
+ 
