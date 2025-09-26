@@ -69,7 +69,12 @@ azure-mgmt-resource               23.3.0
 12. **Input Variables**:
 		Mechanism by which we can pass in values to terraform.
 		Adds the ability to customize your terraform module.
-		As a best practice put all your input variables in "variables.tf" file.
+		As a best practice put all your input variables in "terraform.tfvars" file.
+		If you are not using input variables then the other method of supplying variables is by using the "-var-file" command line option which can become too complex over time.
+		Remember - 
+		"variables.tf" file is for declaring & defining your variables.
+		"terraform.tfvars" file is for assigning values to the variables created in variables.tf file.
+		"terraform.tfvars" & "*.auto.tfvars"  basically serve the same function.
 13. Remember:
 		When you write Terraform for Azure - it only works on Azure
 		When you write Terraform for AWS - it only works on AWS.
@@ -148,10 +153,28 @@ For example:
 - If Terraform has already created your server, running `terraform apply` again won’t create another one—it will detect that the server already exists and leave it as is.
     
 - Terraform only makes changes when something in your configuration or the real-world resources is different.
+29. About Terraform license: Terraform is not open source anymore. Terraform has moved from "open source" to BSL licensing model. "OpenTofu" is the current open source version of Terraform. As long as you are not selling Terraform (without their consent) you can still use Terraform (Hashicorp) for creating your internal infra. 
+30. Can we delete a Resource group in Azure (which was created through portal) using Terraform?
+- Yes, Terraform can delete it, but only **after you import it into Terraform state**.    
+- Without importing, Terraform won’t touch it, because it doesn’t know it exists.
+- 
+31. Set up of a new Terraform folder from scratch in VScode & set up a remote terraform backend state file (Udemy - Terraform 101 Ultimate Hands on Guide (lecture 62))
+	1. Create folder
+	2. Create the files - main.tf, variables.tf, versions.tf, outputs.tf, terraform.tfvars, env/dev.tfvars, env/prod.tfvars
+	3. Populate versions.tf with provider information (azurerm, random, backend)
+	4. Populate variables.tf with variable names & type set to string
+	5. Populate terraform.tfvars with the actual values for the variables defined in varaibales.tf
+	6. In main.tf we populate it with the resource block for creating an RG.
+	7. In versions.tf backend piece we populate it with a preexisting RG, storage account, container and key. This container will hold the remote backend file inside of it. 
 
 =========================================
 =========================================
 Questions:
 	1. Whats use of terraform.tfstate file?
 	2. Whats use of terraform.tfvars file?
+	3. Difference between "for_each" and "for" in Terraform? (Ultimate Devops & Cloud interview guide - Lecture 64)
+	4. What is a statefile in terraform?  (Ultimate Devops & Cloud interview guide - Lecture 66)
+	5. Have you considered storing state file in Git instead of AWS S3 or Azure Blob.
+	
+
  
