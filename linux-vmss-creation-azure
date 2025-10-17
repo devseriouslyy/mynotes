@@ -1,0 +1,46 @@
+Objective: Create a Virtual machine scale in Azure with a Linux image using the Azure cli
+Image to be used: Ubuntu 22.04 LTS
+
+Prerequisites:
+1. Azure CLI installed (`az version` to check)
+2. az login
+3. az account set --subscription "<your-subscription-id>"
+4. Or you can use shell.azure.com and use your cloud shell as well.
+
+Step 1: Create a Resource Group
+Bash - az group create \
+  --name myResourceGroup \
+  --location eastus
+
+Step 2: Create the Linux VMSS
+Bash - az vmss create \
+  --resource-group myResourceGroup \
+  --name myScaleSet \
+  --image Ubuntu2204 \
+  --upgrade-policy-mode automatic \
+  --admin-username azureuser \
+  --generate-ssh-keys \
+  --instance-count 2 \
+  --vm-sku Standard_B2s
+
+Step 3: Check the Deployment
+az vmss list --resource-group myResourceGroup -o table
+
+To see individual instances:
+az vmss list-instances \
+  --resource-group myResourceGroup \
+  --name myScaleSet \
+  -o table
+
+Step 4: Connect to a VM Instance
+First, get the public IP of the load balancer:
+az network public-ip list \
+  --resource-group myResourceGroup \
+  -o table
+
+Then connect (replace `<public-ip>` and `<port>`):
+ssh azureuser@<public-ip> -p <port>
+
+Step 5: Clean Up (optional)
+az group delete --name myResourceGroup --yes --no-wait
+
